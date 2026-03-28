@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Task, FilterOptions, Status, Priority, Category } from '../types';
+import { useState, useMemo } from 'react';
+import type { Task, FilterOptions } from '../types';
 import { useLocalStorage } from './useLocalStorage';
 
 const initialFilters: FilterOptions = {

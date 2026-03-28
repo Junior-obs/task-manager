@@ -1,22 +1,11 @@
-import React, { createContext, useContext, ReactNode } from 'react';
-import { Task, FilterOptions } from '../types';
+import React, { createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
+import type { TaskContextType } from './types';
 import { useTasks } from '../hooks/useTasks';
-
-interface TaskContextType {
-  tasks: Task[];
-  filteredTasks: Task[];
-  filters: FilterOptions;
-  addTask: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => void;
-  updateTask: (id: string, updates: Partial<Task>) => void;
-  deleteTask: (id: string) => void;
-  setFilters: (filters: Partial<FilterOptions>) => void;
-  resetFilters: () => void;
-  getTaskById: (id: string) => Task | undefined;
-}
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
-export const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const {
     tasks,
     filteredTasks,
