@@ -1,20 +1,20 @@
-// 1. Définition des types de base (pour la précision)
+
 export type Priority = 'low' | 'medium' | 'high';
 export type Status = 'todo' | 'in-progress' | 'completed' | 'done';
 export type Category = 'work' | 'personal' | 'shopping' | 'others';
 
-// 2. L'interface principale (utilisée par TaskCard)
+
 export interface Task {
   id: string;
   title: string;
   description?: string;
   priority: Priority;
   status: Status;
-  category: string;
+  category: Category;
   dueDate: string;
 }
 
-// 3. Le type pour le formulaire (utilisé par TaskForm)
+
 export interface TaskFormData extends Omit<Task, 'id'> {}
 
 // 4. Les dictionnaires de labels (utilisés par les deux)
