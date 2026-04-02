@@ -7,9 +7,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses = {
-  primary: 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg hover:shadow-xl',
-  secondary: 'bg-white border border-slate-300 hover:border-slate-400 text-slate-700 hover:bg-slate-50 shadow-sm',
-  danger: 'bg-gradient-to-r from-red-600 to-rose-500 hover:from-red-700 hover:to-rose-600 text-white shadow-lg hover:shadow-xl',
+  primary: 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg hover:shadow-2xl active:shadow-md active:scale-95 hover:brightness-110',
+  secondary: 'bg-white/70 backdrop-blur-lg border border-white/20 hover:bg-white text-slate-800 hover:text-slate-900 shadow-lg hover:shadow-xl active:scale-95 hover:brightness-110',
+  danger: 'bg-gradient-to-r from-red-600 to-rose-500 hover:from-red-700 hover:to-rose-600 text-white shadow-lg hover:shadow-2xl active:shadow-md active:scale-95 hover:brightness-110',
 };
 
 const sizeClasses = {

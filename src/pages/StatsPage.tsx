@@ -65,121 +65,128 @@ export const StatsPage = () => {
     }));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-6">
-          📊
-        </h1>
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Statistiques
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Visualisez la progression de vos tâches et identifiez vos habitudes
-        </p>
-      </div>
-
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <StatCard
-          title="Total tâches"
-          value={stats.total.toLocaleString()}
-          icon={<BarChart3 className="w-8 h-8" />}
-          color="bg-gradient-to-br from-blue-500 to-blue-600"
-        />
-        <StatCard
-          title="Taux complétion"
-          value={`${stats.completionRate}%`}
-          icon={<CheckCircle className="w-8 h-8" />}
-          color="bg-gradient-to-br from-emerald-500 to-emerald-600"
-        />
-        <StatCard
-          title="En cours"
-          value={stats.byStatus['in-progress']}
-          icon={<Clock className="w-8 h-8" />}
-          color="bg-gradient-to-br from-yellow-500 to-yellow-600"
-        />
-        <StatCard
-          title="Priorité haute"
-          value={stats.byPriority.high}
-          icon={<TrendingUp className="w-8 h-8" />}
-          color="bg-gradient-to-br from-red-500 to-red-600"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Status Chart */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-            <BarChart3 className="w-8 h-8 text-blue-600" />
-            Distribution par statut
-          </h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={statusChartData}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} />
-              <YAxis axisLine={false} tickLine={false} />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" />
-            </BarChart>
-          </ResponsiveContainer>
+    <div className="bg-gradient-to-br from-slate-50 to-indigo-50 min-h-screen p-8 dark:from-slate-950 dark:to-indigo-900 dark:text-slate-100">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4">
+            Statistiques
+          </h1>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            Visualisez la progression de vos tâches et identifiez vos habitudes
+          </p>
         </div>
 
-        {/* Priority Chart */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-            <Award className="w-8 h-8 text-amber-600" />
-            Distribution par priorité
-          </h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={priorityChartData}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} />
-              <YAxis axisLine={false} tickLine={false} />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* Stat Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 animate-fade-in">
+          <StatCard
+            title="Total tâches"
+            value={stats.total.toLocaleString()}
+            icon={<BarChart3 className="w-8 h-8" />}
+            color="bg-gradient-to-br from-blue-500 to-blue-600"
+          />
+          <StatCard
+            title="Taux complétion"
+            value={`${stats.completionRate}%`}
+            icon={<CheckCircle className="w-8 h-8" />}
+            color="bg-gradient-to-br from-emerald-500 to-emerald-600"
+          />
+          <StatCard
+            title="En cours"
+            value={stats.byStatus['in-progress']}
+            icon={<Clock className="w-8 h-8" />}
+            color="bg-gradient-to-br from-yellow-500 to-yellow-600"
+          />
+          <StatCard
+            title="Priorité haute"
+            value={stats.byPriority.high}
+            icon={<TrendingUp className="w-8 h-8" />}
+            color="bg-gradient-to-br from-red-500 to-red-600"
+          />
         </div>
-      </div>
 
-      {/* Top Categories */}
-      {topCategories.length > 0 && (
-        <div className="mt-12 bg-white rounded-3xl shadow-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-            <Filter className="w-8 h-8 text-purple-600" />
-            Catégories les plus actives
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {topCategories.map((category, index) => (
-              <div key={index} className="text-center p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl">
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-white">{category.name.slice(0,2).toUpperCase()}</span>
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-1">{category.name}</h4>
-                <p className="text-3xl font-bold text-purple-600">{category.value}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in">
+          {/* Status Chart */}
+          <div className="bg-white/70 backdrop-blur-lg rounded-3xl border border-white/20 shadow-xl p-8 hover:shadow-2xl transition-all">
+            <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-xl">
+                <BarChart3 className="w-6 h-6 text-blue-600" />
               </div>
-            ))}
+              Distribution par statut
+            </h3>
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={statusChartData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                <YAxis axisLine={false} tickLine={false} />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Priority Chart */}
+          <div className="bg-white/70 backdrop-blur-lg rounded-3xl border border-white/20 shadow-xl p-8 hover:shadow-2xl transition-all">
+            <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+              <div className="p-2 bg-amber-100 rounded-xl">
+                <Award className="w-6 h-6 text-amber-600" />
+              </div>
+              Distribution par priorité
+            </h3>
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={priorityChartData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                <YAxis axisLine={false} tickLine={false} />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
-      )}
 
-      {tasks.length === 0 && (
-        <div className="text-center py-24">
-          <BarChart3 className="w-24 h-24 text-gray-300 mx-auto mb-8" />
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">Aucune donnée</h3>
-          <p className="text-xl text-gray-500 mb-8 max-w-md mx-auto">
-            Ajoutez vos premières tâches pour voir vos statistiques
-          </p>
-          <a
-            href="/add"
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all"
-          >
-            + Ajouter ma première tâche
-          </a>
-        </div>
-      )}
+        {/* Top Categories */}
+        {topCategories.length > 0 && (
+          <div className="mt-12 bg-white/70 backdrop-blur-lg rounded-3xl border border-white/20 shadow-xl p-8 hover:shadow-2xl transition-all animate-fade-in">
+            <h3 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+              <div className="p-2 bg-purple-100 rounded-xl">
+                <Filter className="w-6 h-6 text-purple-600" />
+              </div>
+              Catégories les plus actives
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {topCategories.map((category, index) => (
+                <div key={index} className="text-center p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl border border-purple-100 hover:border-purple-300 hover:shadow-lg transition-all hover:-translate-y-1">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-white/30">
+                    <span className="text-2xl font-bold text-white">{category.name.slice(0,2).toUpperCase()}</span>
+                  </div>
+                  <h4 className="text-xl font-bold text-slate-800 mb-1">{category.name}</h4>
+                  <p className="text-3xl font-bold text-purple-600">{category.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tasks.length === 0 && (
+          <div className="text-center py-24 animate-fade-in">
+            <div className="inline-block p-4 bg-slate-100 rounded-2xl mb-6">
+              <BarChart3 className="w-20 h-20 text-slate-400" />
+            </div>
+            <h3 className="text-3xl font-bold text-slate-800 mb-4">Aucune donnée</h3>
+            <p className="text-xl text-slate-600 mb-8 max-w-md mx-auto">
+              Ajoutez vos premières tâches pour voir vos statistiques
+            </p>
+            <a
+              href="/add"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl active:scale-95 transition-all"
+            >
+              + Ajouter ma première tâche
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

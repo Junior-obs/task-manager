@@ -22,7 +22,7 @@ const initialFormData: FormData = {
 export const TaskFormPage = () => {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
-  const { addTask, updateTask, getTaskById } = useTaskContext();
+  const { addTask, updateTask, getTaskById, resetFilters } = useTaskContext();
   
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -90,7 +90,8 @@ export const TaskFormPage = () => {
           dueDate: formData.dueDate,
         });
       }
-      navigate('/');
+      resetFilters();
+      navigate('/', { replace: true });
     } catch (error) {
       console.error('Erreur sauvegarde:', error);
     } finally {
@@ -103,28 +104,28 @@ export const TaskFormPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+    <div className="bg-gradient-to-br from-slate-50 to-indigo-50 min-h-screen py-12 px-4 dark:from-slate-950 dark:to-indigo-900 dark:text-slate-100">
       <div className="max-w-2xl mx-auto">
         <button
           onClick={handleCancel}
-          className="mb-8 inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
+          className="mb-8 inline-flex items-center gap-2 text-slate-700 hover:text-slate-900 font-semibold transition-all hover:bg-white/50 px-4 py-2 rounded-xl"
         >
           <ArrowLeft className="w-5 h-5" />
           Retour
         </button>
 
-        <div className="bg-white rounded-3xl shadow-2xl p-8">
+        <div className="bg-white/70 backdrop-blur-lg rounded-3xl border border-white/20 shadow-xl p-8 hover:shadow-2xl transition-all animate-fade-in">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl font-bold text-slate-800 mb-3">
               {isEditing ? 'Modifier la tâche' : 'Nouvelle tâche'}
             </h1>
-            <p className="text-gray-600">Remplissez les informations de votre tâche</p>
+            <p className="text-slate-600 font-medium">Remplissez les informations de votre tâche</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-semibold text-gray-900 mb-2">
+              <label htmlFor="title" className="block text-sm font-semibold text-slate-800 mb-2">
                 Titre *
               </label>
               <input
@@ -132,17 +133,17 @@ export const TaskFormPage = () => {
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className={`w-full px-4 py-4 border-2 rounded-2xl text-lg focus:outline-none focus:ring-4 transition-all ${
+                className={`w-full px-4 py-3.5 border-2 rounded-xl text-base focus:outline-none focus:ring-2 transition-all font-medium ${
                   errors.title
-                    ? 'border-red-300 focus:ring-red-500 bg-red-50'
-                    : 'border-gray-200 focus:ring-blue-500 focus:border-blue-500'
+                    ? 'border-red-300 focus:ring-red-500 bg-red-50 text-red-900'
+                    : 'border-white/30 focus:ring-blue-400 focus:border-blue-400 bg-white/50 text-slate-800'
                 }`}
                 placeholder="Ex: Finaliser le rapport"
                 aria-invalid={!!errors.title}
                 aria-describedby={errors.title ? 'title-error' : undefined}
               />
               {errors.title && (
-                <p id="title-error" className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                <p id="title-error" className="mt-2 text-sm text-red-600 flex items-center gap-1 font-semibold">
                   <AlertCircle className="w-4 h-4" />
                   {errors.title}
                 </p>
@@ -151,7 +152,7 @@ export const TaskFormPage = () => {
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-semibold text-gray-900 mb-2">
+              <label htmlFor="description" className="block text-sm font-semibold text-slate-800 mb-2">
                 Description
               </label>
               <textarea
@@ -159,7 +160,7 @@ export const TaskFormPage = () => {
                 rows={4}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500 resize-vertical transition-all"
+                className="w-full px-4 py-3.5 border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 resize-vertical transition-all bg-white/50 text-slate-800 placeholder-slate-500 font-medium"
                 placeholder="Détails supplémentaires..."
               />
             </div>
@@ -167,14 +168,14 @@ export const TaskFormPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Status */}
               <div>
-                <label htmlFor="status" className="block text-sm font-semibold text-gray-900 mb-2">
+                <label htmlFor="status" className="block text-sm font-semibold text-slate-800 mb-2">
                   Statut
                 </label>
                 <select
                   id="status"
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as Status })}
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white/50 text-slate-800 font-semibold"
                 >
                   {Object.entries(statusLabels).map(([value, label]) => (
                     <option key={value} value={value}>{label}</option>
@@ -184,14 +185,14 @@ export const TaskFormPage = () => {
 
               {/* Priority */}
               <div>
-                <label htmlFor="priority" className="block text-sm font-semibold text-gray-900 mb-2">
+                <label htmlFor="priority" className="block text-sm font-semibold text-slate-800 mb-2">
                   Priorité
                 </label>
                 <select
                   id="priority"
                   value={formData.priority}
                   onChange={(e) => setFormData({ ...formData, priority: e.target.value as Priority })}
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white/50 text-slate-800 font-semibold"
                 >
                   {Object.entries(priorityLabels).map(([value, label]) => (
                     <option key={value} value={value}>{label}</option>
@@ -201,14 +202,14 @@ export const TaskFormPage = () => {
 
               {/* Category */}
               <div>
-                <label htmlFor="category" className="block text-sm font-semibold text-gray-900 mb-2">
+                <label htmlFor="category" className="block text-sm font-semibold text-slate-800 mb-2">
                   Catégorie
                 </label>
                 <select
                   id="category"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value as Category })}
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white/50 text-slate-800 font-semibold"
                 >
                   {Object.entries(categoryLabels).map(([value, label]) => (
                     <option key={value} value={value}>{label}</option>
@@ -219,7 +220,7 @@ export const TaskFormPage = () => {
 
             {/* Due Date */}
             <div>
-              <label htmlFor="dueDate" className="block text-sm font-semibold text-gray-900 mb-2">
+              <label htmlFor="dueDate" className="block text-sm font-semibold text-slate-800 mb-2">
                 Date d'échéance (optionnel)
               </label>
               <input
@@ -227,16 +228,16 @@ export const TaskFormPage = () => {
                 type="date"
                 value={formData.dueDate}
                 onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                className={`w-full px-4 py-4 border-2 rounded-2xl focus:outline-none focus:ring-4 transition-all ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all font-medium ${
                   errors.dueDate
-                    ? 'border-red-300 focus:ring-red-500 bg-red-50'
-                    : 'border-gray-200 focus:ring-blue-500 focus:border-blue-500'
+                    ? 'border-red-300 focus:ring-red-500 bg-red-50 text-red-900'
+                    : 'border-white/30 focus:ring-blue-400 focus:border-blue-400 bg-white/50 text-slate-800'
                 }`}
                 aria-invalid={!!errors.dueDate}
                 aria-describedby={errors.dueDate ? 'dueDate-error' : undefined}
               />
               {errors.dueDate && (
-                <p id="dueDate-error" className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                <p id="dueDate-error" className="mt-2 text-sm text-red-600 flex items-center gap-1 font-semibold">
                   <AlertCircle className="w-4 h-4" />
                   {errors.dueDate}
                 </p>
@@ -244,20 +245,20 @@ export const TaskFormPage = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-6">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-2xl shadow-xl hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-emerald-300 transition-all flex items-center justify-center gap-2 text-lg"
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-2xl shadow-xl hover:shadow-2xl active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition-all flex items-center justify-center gap-2 text-lg"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     Sauvegarde...
                   </>
                 ) : (
                   <>
-                    <Save className="w-6 h-6" />
+                    <Save className="w-5 h-5" />
                     {isEditing ? 'Mettre à jour' : 'Créer la tâche'}
                   </>
                 )}
@@ -265,10 +266,10 @@ export const TaskFormPage = () => {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-4 px-8 rounded-2xl focus:outline-none focus:ring-4 focus:ring-gray-500 transition-all"
+                className="flex-1 bg-white/70 backdrop-blur-lg border border-white/20 hover:bg-white text-slate-800 font-bold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                <X className="w-6 h-6 inline mr-2" />
+                <X className="w-5 h-5" />
                 Annuler
               </button>
             </div>
