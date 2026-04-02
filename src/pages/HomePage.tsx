@@ -21,7 +21,10 @@ import { useTaskContext } from '../context/TaskContext';
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { tasks } = useTaskContext();
-  const [greeting, setGreeting] = useState('');
+  const [greeting] = useState(() => {
+    const hour = new Date().getHours();
+    return hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
+  });
   const [currentTime, setCurrentTime] = useState(new Date());
   
   // Calculs avancés
@@ -48,13 +51,7 @@ export const HomePage: React.FC = () => {
     color: 'blue'
   })).filter((cat): cat is { name: string; count: number; icon: string; color: string } => cat.count > 0);
 
-  // Définir le message de bienvenue selon l'heure
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting('Bonjour');
-    else if (hour < 18) setGreeting('Bon après-midi');
-    else setGreeting('Bonsoir');
-
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);

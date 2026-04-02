@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { Task, TaskFormData } from '../../types';
 import { priorityLabels, statusLabels, categoryLabels } from '../../types';
 import { Button } from '../common/Button';
@@ -23,21 +23,19 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const [formData, setFormData] = useState<TaskFormData>(initialFormData);
+  const [formData, setFormData] = useState<TaskFormData>(() =>
+    initialData
+      ? {
+          title: initialData.title,
+          description: initialData.description,
+          status: initialData.status,
+          priority: initialData.priority,
+          category: initialData.category,
+          dueDate: initialData.dueDate,
+        }
+      : initialFormData
+  );
   const [errors, setErrors] = useState<Partial<Record<keyof TaskFormData, string>>>({});
-
-  useEffect(() => {
-    if (initialData) {
-      setFormData({
-        title: initialData.title,
-        description: initialData.description,
-        status: initialData.status,
-        priority: initialData.priority,
-        category: initialData.category,
-        dueDate: initialData.dueDate,
-      });
-    }
-  }, [initialData]);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof TaskFormData, string>> = {};
