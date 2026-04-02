@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 import type { TaskContextType } from './types';
 import { useTasks } from '../hooks/useTasks';
