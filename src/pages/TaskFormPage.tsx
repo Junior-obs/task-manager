@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTaskContext } from '../context/TaskContext';
+import { useProtectedRoute } from '../hooks/useProtectedRoute';
 import type { TaskFormData, Status, Priority, Category } from '../types';
 import { priorityLabels, categoryLabels, statusLabels } from '../types';
 import { ArrowLeft, Save, X, AlertCircle, Calendar, Sparkles } from 'lucide-react';
@@ -28,6 +29,8 @@ export const TaskFormPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  useProtectedRoute();
 
   const existingTask = id ? getTaskById(id) : undefined;
 
@@ -103,7 +106,7 @@ export const TaskFormPage = () => {
         await addTask(taskData);
       }
       resetFilters();
-      navigate('/', { replace: true });
+      setTimeout(() => navigate('/', { replace: true }), 0);
     } catch (error) {
       console.error('Erreur sauvegarde:', error);
     } finally {

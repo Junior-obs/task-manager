@@ -22,7 +22,6 @@
     animation: fadeIn 1s ease-out;
   }
 }
-
 @keyframes fade-in-down {
   from {
     opacity: 0;
@@ -63,4 +62,16 @@
 
 .animate-shake {
   animation: shake 0.3s ease-in-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s infinite;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
 }

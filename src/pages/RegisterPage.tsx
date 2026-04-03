@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, Eye, EyeOff, ArrowRight, UserPlus, CheckCircle, XCircle } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -66,17 +68,27 @@ export const RegisterPage: React.FC = () => {
     }
 
     setLoading(true);
-    // Petit délai pour laisser React finir son cycle de rendu avant navigation
-    setTimeout(() => {
-      try {
-        localStorage.setItem('user', JSON.stringify({ fullName, email }));
-        navigate('/', { replace: true });
-      } catch (err) {
-        console.error('Registration error:', err);
-        setError('Une erreur est survenue lors de l\'inscription');
+    try {
+      const registeredUsersJson = localStorage.getItem('registeredUsers');
+      const registeredUsers = registeredUsersJson ? JSON.parse(registeredUsersJson) : [];
+      
+      const emailExists = registeredUsers.some((u: { email: string }) => u.email === email);
+      if (emailExists) {
+        setError('Cet email est déjà enregistré');
         setLoading(false);
+        return;
       }
-    }, 100);
+      
+      registeredUsers.push({ fullName, email });
+      localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+      
+      login(email, fullName);
+      setTimeout(() => navigate('/', { replace: true }), 300);
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError('Une erreur est survenue lors de l\'inscription');
+      setLoading(false);
+    }
   };
 
   return (
@@ -118,7 +130,7 @@ export const RegisterPage: React.FC = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all"
-                  placeholder="Jean Dupont"
+                  placeholder="Alioune Faye"
                 />
               </div>
             </div>
@@ -265,7 +277,6 @@ export const RegisterPage: React.FC = () => {
   );
 };
 
-// Composant d'arrière‑plan (identique à LoginPage pour cohérence)
 const AnimatedBackground = () => {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">

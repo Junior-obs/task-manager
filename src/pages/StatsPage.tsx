@@ -1,4 +1,5 @@
 import { useTaskContext } from '../context/TaskContext';
+import { useProtectedRoute } from '../hooks/useProtectedRoute';
 import { StatCard } from '../components/stats/StatCard';
 import {
   BarChart3,
@@ -45,6 +46,7 @@ const COLORS = {
 
 export const StatsPage = () => {
   const { tasks } = useTaskContext();
+  useProtectedRoute();
 
   const stats = useMemo((): Stats => {
     const total = tasks.length;
@@ -113,9 +115,9 @@ export const StatsPage = () => {
 
         {/* Cartes KPI */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <StatCard title="Total tâches" value={stats.total} icon={<BarChart3 className="w-6 h-6" />} color="from-blue-500 to-blue-600" trend={stats.total > 0 ? '+12%' : undefined} />
-          <StatCard title="Taux de complétion" value={`${stats.completionRate}%`} icon={<Target className="w-6 h-6" />} color="from-emerald-500 to-emerald-600" progress={stats.completionRate} />
-          <StatCard title="Tâches en retard" value={stats.overdueCount} icon={<AlertCircle className="w-6 h-6" />} color="from-red-500 to-red-600" alert={stats.overdueCount > 0} />
+          <StatCard title="Total tâches" value={stats.total} icon={<BarChart3 className="w-6 h-6" />} color="from-blue-500 to-blue-600" />
+          <StatCard title="Taux de complétion" value={`${stats.completionRate}%`} icon={<Target className="w-6 h-6" />} color="from-emerald-500 to-emerald-600" />
+          <StatCard title="Tâches en retard" value={stats.overdueCount} icon={<AlertCircle className="w-6 h-6" />} color="from-red-500 to-red-600" />
           <StatCard title="Temps moyen" value={`${stats.averageCompletionTime} j`} icon={<Calendar className="w-6 h-6" />} color="from-purple-500 to-purple-600" />
         </div>
 
@@ -149,7 +151,7 @@ export const StatsPage = () => {
             {priorityChartData.length ? (
               <ResponsiveContainer width="100%" height={320}>
                 <RePieChart>
-                  <Pie data={priorityChartData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={2} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
+                  <Pie data={priorityChartData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={2} dataKey="value" label={({ name, percent = 0 }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
                     {priorityChartData.map((e, i) => <Cell key={i} fill={e.color} />)}
                   </Pie>
                   <Tooltip />

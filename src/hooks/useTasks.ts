@@ -69,7 +69,7 @@ const sampleTasks: Task[] = [
 
 export const useTasks = () => {
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', sampleTasks);
-  const [filters, setFiltersState] = useState<FilterOptions>(initialFilters);
+const [filters, setFilters] = useState<FilterOptions>(initialFilters);
 
   // Filtrer les tâches
   const filteredTasks = useMemo(() => {
@@ -123,12 +123,12 @@ export const useTasks = () => {
     setTasks(prev => prev.filter(task => task.id !== id));
   };
 
-  const setFilters = (newFilters: Partial<FilterOptions>) => {
-    setFiltersState(prev => ({ ...prev, ...newFilters }));
+  const updateFilters = (newFilters: Partial<FilterOptions>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
   const resetFilters = () => {
-    setFiltersState(initialFilters);
+    setFilters(initialFilters);
   };
 
   const getTaskById = (id: string) => {
@@ -142,7 +142,7 @@ export const useTasks = () => {
     addTask,
     updateTask,
     deleteTask,
-    setFilters,
+    setFilters: updateFilters,
     resetFilters,
     getTaskById,
   };

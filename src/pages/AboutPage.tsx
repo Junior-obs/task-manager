@@ -1,12 +1,15 @@
 import React from 'react';
 import { Code2, Share2, Mail, CheckSquare, TrendingUp, Users, Sparkles, Award } from 'lucide-react';
+import { useProtectedRoute } from '../hooks/useProtectedRoute';
 
 export const AboutPage: React.FC = () => {
+  useProtectedRoute();
+  
   const teamMembers = [
-    { name: 'Alex Martin', role: 'Lead Tech', github: 'https://github.com', linkedin: 'https://linkedin.com' },
-    { name: 'Sophie Dubois', role: 'UI/UX Designer', github: 'https://github.com', linkedin: 'https://linkedin.com' },
-    { name: 'Thomas Bernard', role: 'Développeur Frontend', github: 'https://github.com', linkedin: 'https://linkedin.com' },
-    { name: 'Marie Lambert', role: 'Développeuse Fullstack', github: 'https://github.com', linkedin: 'https://linkedin.com' },
+    { name: 'Alioune Faye Diouf', role: 'Lead Tech', github: 'https://github.com', linkedin: 'https://linkedin.com' },
+    { name: 'Lamine Badji', role: 'UI/UX Designer', github: 'https://github.com', linkedin: 'https://linkedin.com' },
+    { name: 'Rassoul Tall', role: 'Développeur Frontend', github: 'https://github.com', linkedin: 'https://linkedin.com' },
+    { name: 'Saliou', role: 'Développeuse Fullstack', github: 'https://github.com', linkedin: 'https://linkedin.com' },
   ];
   
   const features = [
