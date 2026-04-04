@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code2, Share2, Mail, CheckSquare, TrendingUp, Users, Sparkles, Award } from 'lucide-react';
+import { Github, Linkedin, Mail, Code2, CheckSquare, TrendingUp, Users, Sparkles, Award } from 'lucide-react';
 import { useProtectedRoute } from '../hooks/useProtectedRoute';
 
 export const AboutPage: React.FC = () => {
@@ -64,7 +64,7 @@ export const AboutPage: React.FC = () => {
           
           {/* Grille des fonctionnalités */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-{features.map((feature, index) => (
+            {features.map((feature, index) => (
               <div 
                 key={`feature-${index}`} 
                 className="backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 rounded-2xl border border-white/30 p-6 text-center shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group animate-fade-in"
@@ -86,7 +86,7 @@ export const AboutPage: React.FC = () => {
               Notre équipe
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-{teamMembers.map((member, index) => (
+              {teamMembers.map((member, index) => (
                 <div 
                   key={`member-${index}`} 
                   className="text-center p-5 bg-gradient-to-br from-white/50 to-indigo-50/30 dark:from-slate-800/50 dark:to-indigo-900/30 rounded-2xl border border-white/40 hover:border-indigo-300 dark:hover:border-indigo-700 shadow-md hover:shadow-xl transition-all group"
@@ -107,7 +107,7 @@ export const AboutPage: React.FC = () => {
                       className="text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 bg-white/50 dark:bg-slate-800/50 p-2 rounded-full transition-all hover:scale-110"
                       aria-label="GitHub"
                     >
-                      <Code2 size={18} />
+                      <Github size={18} />
                     </a>
                     <a 
                       href={member.linkedin} 
@@ -116,7 +116,7 @@ export const AboutPage: React.FC = () => {
                       className="text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 bg-white/50 dark:bg-slate-800/50 p-2 rounded-full transition-all hover:scale-110"
                       aria-label="LinkedIn"
                     >
-                      <Share2 size={18} />
+                      <Linkedin size={18} />
                     </a>
                     <a 
                       href={`mailto:${member.name.toLowerCase().replace(' ', '.')}@taskflow.com`} 
@@ -141,14 +141,11 @@ export const AboutPage: React.FC = () => {
   );
 };
 
-// Composant d'arrière‑plan animé (identique aux autres pages)
+// Composant d'arrière‑plan animé
 const AnimatedBackground = () => {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
-      {/* Dégradé de base */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-slate-950 dark:via-indigo-950 dark:to-purple-950" />
-      
-      {/* Vagues SVG */}
       <svg className="absolute bottom-0 left-0 w-full h-2/3 opacity-30 dark:opacity-20" viewBox="0 0 1440 320" preserveAspectRatio="none">
         <defs>
           <linearGradient id="waveGradAbout" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -158,8 +155,6 @@ const AnimatedBackground = () => {
         </defs>
         <path fill="url(#waveGradAbout)" fillOpacity="0.4" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,208C960,213,1056,203,1152,186.7C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" />
       </svg>
-      
-      {/* Blobs flottants */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-300/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-300/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000" />

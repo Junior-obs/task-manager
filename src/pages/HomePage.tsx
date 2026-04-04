@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   CheckCircle, Clock, ListTodo, Plus, TrendingUp, Calendar,
@@ -34,9 +34,8 @@ export const HomePage: React.FC = () => {
     return hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
   });
   const [currentTime, setCurrentTime] = useState(new Date());
-  // userName computed from localStorage
 
-  // Récupération du nom depuis localStorage (pas besoin de contexte)
+  // Récupération du nom depuis localStorage
   const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
   const userName = (() => {
     if (!userStr) return 'Utilisateur';
@@ -264,8 +263,8 @@ export const HomePage: React.FC = () => {
           <div className="p-6">
             {tasks.length > 0 ? (
               <div className="space-y-3">
-                {tasks.slice(0, 5).map((task, index) => (
-                  <div key={task.id} className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all cursor-pointer" style={{ animationDelay: `${index * 100}ms` }} onClick={() => navigate(`/edit/${task.id}`)}>
+                {tasks.slice(0, 5).map((task) => (
+                  <div key={task.id} className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all cursor-pointer" onClick={() => navigate(`/edit/${task.id}`)}>
                     <div className="flex items-center gap-4 flex-1">
                       <div className={`w-2 h-2 rounded-full ${task.status === 'done' ? 'bg-emerald-500' : task.priority === 'high' ? 'bg-red-500' : task.priority === 'medium' ? 'bg-amber-500' : 'bg-blue-500'}`} />
                       <div className="flex-1">

@@ -51,7 +51,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         isCompleted ? 'opacity-60 grayscale' : ''
       }`}>
         {/* Header avec avatar et titre */}
-          {/* Titre et description */}
         <div className="flex-1 min-w-0 mb-4">
           <h3 className={`text-lg font-semibold text-slate-800 tracking-tight truncate ${
             isCompleted ? 'line-through text-slate-500' : ''
@@ -67,24 +66,20 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
         {/* Boutons d'action */}
         <div className="flex gap-2 flex-shrink-0">
-
-          {/* Boutons d'action */}
-          <div className="flex gap-2 flex-shrink-0">
-            <button
-              onClick={() => onEdit(task)}
-              className="p-2 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all duration-200 text-blue-600 hover:text-blue-700 active:scale-95 hover:brightness-110"
-              aria-label={`Modifier ${task.title}`}
-            >
-              <Edit2 size={18} />
-            </button>
-            <button
-              onClick={() => setShowDeleteModal(true)}
-              className="p-2 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all duration-200 text-rose-600 hover:text-rose-700 active:scale-95 hover:brightness-110"
-              aria-label={`Supprimer ${task.title}`}
-            >
-              <Trash2 size={18} />
-            </button>
-          </div>
+          <button
+            onClick={() => onEdit(task)}
+            className="p-2 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all duration-200 text-blue-600 hover:text-blue-700 active:scale-95 hover:brightness-110"
+            aria-label={`Modifier ${task.title}`}
+          >
+            <Edit2 size={18} />
+          </button>
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="p-2 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all duration-200 text-rose-600 hover:text-rose-700 active:scale-95 hover:brightness-110"
+            aria-label={`Supprimer ${task.title}`}
+          >
+            <Trash2 size={18} />
+          </button>
         </div>
 
         {/* Badges - Priorité, Statut, Catégorie */}
@@ -120,6 +115,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               {new Date(task.dueDate).toLocaleDateString('fr-FR')}
             </span>
           </div>
+
           {task.status !== 'done' && (
             <select
               value={task.status}

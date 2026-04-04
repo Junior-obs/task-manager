@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { TaskProvider } from './context/TaskContext';
