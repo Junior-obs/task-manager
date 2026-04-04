@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { type Task, type TaskFormData, priorityLabels, statusLabels, categoryLabels } from '../types';
+import React, { useState } from 'react';
+import type { Task, TaskFormData } from '../../types';
+import { priorityLabels, statusLabels, categoryLabels } from '../../types';
 import { Button } from '../common/Button';
 
 interface TaskFormProps {
@@ -22,21 +23,19 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const [formData, setFormData] = useState<TaskFormData>(initialFormData);
+  const [formData, setFormData] = useState<TaskFormData>(() =>
+    initialData
+      ? {
+          title: initialData.title,
+          description: initialData.description,
+          status: initialData.status,
+          priority: initialData.priority,
+          category: initialData.category,
+          dueDate: initialData.dueDate,
+        }
+      : initialFormData
+  );
   const [errors, setErrors] = useState<Partial<Record<keyof TaskFormData, string>>>({});
-
-  useEffect(() => {
-    if (initialData) {
-      setFormData({
-        title: initialData.title,
-        description: initialData.description,
-        status: initialData.status,
-        priority: initialData.priority,
-        category: initialData.category,
-        dueDate: initialData.dueDate,
-      });
-    }
-  }, [initialData]);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof TaskFormData, string>> = {};
@@ -47,7 +46,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       newErrors.title = 'Le titre doit contenir au moins 3 caractères';
     }
     
-    if (formData.description &&!formData.description.trim()) {
+    if (!formData.description.trim()) {
       newErrors.description = 'La description est requise';
     }
     
@@ -88,7 +87,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           name="title"
           value={formData.title}
           onChange={handleChange}
-          className={`input-field ${errors.title ? 'border-red-500' : ''}`}
+          className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.title ? 'border-red-500' : ''}`}
         />
         {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
       </div>
@@ -103,7 +102,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           rows={3}
           value={formData.description}
           onChange={handleChange}
-          className={`input-field ${errors.description ? 'border-red-500' : ''}`}
+          className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.description ? 'border-red-500' : ''}`}
         />
         {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
       </div>
@@ -118,7 +117,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="input-field"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             {Object.entries(statusLabels).map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
@@ -135,7 +134,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             name="priority"
             value={formData.priority}
             onChange={handleChange}
-            className="input-field"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             {Object.entries(priorityLabels).map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
@@ -154,7 +153,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="input-field"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             {Object.entries(categoryLabels).map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
@@ -172,7 +171,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             name="dueDate"
             value={formData.dueDate}
             onChange={handleChange}
-            className={`input-field ${errors.dueDate ? 'border-red-500' : ''}`}
+            className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.dueDate ? 'border-red-500' : ''}`}
           />
           {errors.dueDate && <p className="text-red-500 text-sm mt-1">{errors.dueDate}</p>}
         </div>
@@ -182,10 +181,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         <Button type="button" variant="secondary" onClick={onCancel}>
           Annuler
         </Button>
-        <Button type ="submit">
+        <Button type="submit">
           {initialData ? 'Modifier' : 'Créer'}
         </Button>
       </div>
-    </form>       
+    </form>
   );
 };

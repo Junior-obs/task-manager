@@ -1,0 +1,33 @@
+import { useState } from 'react';
+
+export function useLocalStorage<T>(key: string, initialValue: T) {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(`Failed to read from localStorage for key "${key}":`, error);
+      }
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      if (typeof window === 'undefined') return;
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(`Failed to write to localStorage for key "${key}":`, error);
+      }
+    }
+  };
+
+  return [storedValue, setValue] as const;
+}
