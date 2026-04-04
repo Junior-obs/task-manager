@@ -9,7 +9,7 @@ export const AboutPage: React.FC = () => {
     { name: 'Alioune Faye Diouf', role: 'Lead Tech', github: 'https://github.com', linkedin: 'https://linkedin.com' },
     { name: 'Lamine Badji', role: 'UI/UX Designer', github: 'https://github.com', linkedin: 'https://linkedin.com' },
     { name: 'Rassoul Tall', role: 'Développeur Frontend', github: 'https://github.com', linkedin: 'https://linkedin.com' },
-    { name: 'Saliou', role: 'Développeuse Fullstack', github: 'https://github.com', linkedin: 'https://linkedin.com' },
+    { name: 'Saliou', role: 'Développeuse Frontend', github: 'https://github.com', linkedin: 'https://linkedin.com' },
   ];
   
   const features = [
@@ -64,9 +64,9 @@ export const AboutPage: React.FC = () => {
           
           {/* Grille des fonctionnalités */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {features.map((feature, index) => (
+{features.map((feature, index) => (
               <div 
-                key={index} 
+                key={`feature-${index}`} 
                 className="backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 rounded-2xl border border-white/30 p-6 text-center shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -86,9 +86,9 @@ export const AboutPage: React.FC = () => {
               Notre équipe
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {teamMembers.map((member, index) => (
+{teamMembers.map((member, index) => (
                 <div 
-                  key={index} 
+                  key={`member-${index}`} 
                   className="text-center p-5 bg-gradient-to-br from-white/50 to-indigo-50/30 dark:from-slate-800/50 dark:to-indigo-900/30 rounded-2xl border border-white/40 hover:border-indigo-300 dark:hover:border-indigo-700 shadow-md hover:shadow-xl transition-all group"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >

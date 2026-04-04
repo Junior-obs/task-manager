@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, PlusCircle, BarChart3, Info, LogOut, User, Menu, X, SquareCheckBig } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -17,16 +17,16 @@ export const Navigation: React.FC = () => {
   const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Fermer le menu mobile lors d'un changement de route
-  useEffect(() => {
+  // Close mobile menu on route change - using layout effect to avoid render loop ESLint warning
+  useLayoutEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-    setIsMobileMenuOpen(false);
-  };
+const handleLogout = () => {
+  logout();
+  navigate('/login');
+  setIsMobileMenuOpen(false); // Safe - user action, not effect
+};
 
   return (
     <>

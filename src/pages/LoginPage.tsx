@@ -27,24 +27,23 @@ export const LoginPage: React.FC = () => {
 
     setLoading(true);
     try {
-      // Récupérer la liste des utilisateurs enregistrés
       const registeredUsersJson = localStorage.getItem('registeredUsers');
       const registeredUsers = registeredUsersJson ? JSON.parse(registeredUsersJson) : [];
       
-      // Chercher l'utilisateur par email
       const foundUser = registeredUsers.find((u: { email: string; fullName: string }) => u.email === email);
       
+      let fullName: string;
       if (foundUser) {
-        // Utilisateur trouvé - utiliser son fullName enregistré
-        login(email, foundUser.fullName);
+        fullName = foundUser.fullName;
       } else {
-        // Utilisateur non trouvé - utiliser prénom générique du début email seulement si valide
-        const fullName = email.split('@')[0].replace(/[^a-zA-Z]/g, '').charAt(0).toUpperCase() + email.split('@')[0].replace(/[^a-zA-Z]/g, '').slice(1) || 'Utilisateur';
-        login(email, fullName);
+        // Générer un nom propre depuis l'email (uniquement si jamais l'utilisateur n'est pas dans registeredUsers)
+        const base = email.split('@')[0].replace(/[^a-zA-Z]/g, '');
+        fullName = base ? base.charAt(0).toUpperCase() + base.slice(1).toLowerCase() : 'Utilisateur';
       }
       
-      // Délai pour voir le loader et éviter les conflits de rendu
-      setTimeout(() => navigate('/', { replace: true }), 300);
+      login(email, fullName);
+      // ✅ Navigation immédiate (pas besoin de setTimeout, login est synchrone)
+      navigate('/', { replace: true });
     } catch (err) {
       console.error('Login error:', err);
       setError('Une erreur est survenue lors de la connexion');
@@ -169,7 +168,7 @@ export const LoginPage: React.FC = () => {
   );
 };
 
-// Composant d'arrière-plan
+// Composant d'arrière-plan (inchangé)
 const AnimatedBackground = () => {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">

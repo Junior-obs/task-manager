@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTaskContext } from '../context/TaskContext';
-import { useProtectedRoute } from '../hooks/useProtectedRoute';
 import type { TaskFormData, Status, Priority, Category } from '../types';
 import { priorityLabels, categoryLabels, statusLabels } from '../types';
 import { ArrowLeft, Save, X, AlertCircle, Calendar, Sparkles } from 'lucide-react';
@@ -30,7 +29,7 @@ export const TaskFormPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  useProtectedRoute();
+  // ✅ useProtectedRoute() supprimé – inutile sur cette page
 
   const existingTask = id ? getTaskById(id) : undefined;
 
@@ -86,7 +85,6 @@ export const TaskFormPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Marquer tous les champs comme touchés pour afficher les erreurs
     setTouched({ title: true, dueDate: true });
     if (!validateForm()) return;
 
@@ -98,7 +96,7 @@ export const TaskFormPage = () => {
         status: formData.status,
         priority: formData.priority,
         category: formData.category,
-        dueDate: formData.dueDate || new Date().toISOString().split('T')[0], // fallback si vide
+        dueDate: formData.dueDate || new Date().toISOString().split('T')[0],
       };
       if (isEditing && id) {
         await updateTask(id, taskData);
@@ -106,7 +104,7 @@ export const TaskFormPage = () => {
         await addTask(taskData);
       }
       resetFilters();
-      setTimeout(() => navigate('/', { replace: true }), 0);
+      navigate('/', { replace: true });
     } catch (error) {
       console.error('Erreur sauvegarde:', error);
     } finally {
@@ -317,7 +315,7 @@ export const TaskFormPage = () => {
   );
 };
 
-// Composant d'arrière-plan animé (identique à LoginPage avec variante indigo/purple)
+// Composant d'arrière-plan animé
 const AnimatedBackground = () => {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
