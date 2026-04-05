@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { Task, Category } from '../types';
 import { 
   CheckCircle, Clock, ListTodo, Plus, TrendingUp, Calendar,
   AlertCircle, Award, Sparkles, ArrowRight, BarChart3, Target, Zap, Star
 } from 'lucide-react';
-import type { Category } from '../types';
 import { useTaskContext } from '../context/TaskContext';
 import { useProtectedRoute } from '../hooks/useProtectedRoute';
 
@@ -49,11 +49,11 @@ export const HomePage: React.FC = () => {
 
   // Calculs avancés
   const totalTasks = tasks.length;
-  const completedTasks = tasks.filter(t => t.status === 'done').length;
+  const completedTasks = tasks.filter((t: Task) => t.status === 'done').length;
   const pendingTasks = totalTasks - completedTasks;
   const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-  const highPriorityCount = tasks.filter(t => t.priority === 'high').length;
-  const urgentTasks = tasks.filter(t => {
+  const highPriorityCount = tasks.filter((t: Task) => t.priority === 'high').length;
+  const urgentTasks = tasks.filter((t: Task) => {
     const dueDate = new Date(t.dueDate);
     const today = new Date();
     const diffTime = dueDate.getTime() - today.getTime();
@@ -63,7 +63,7 @@ export const HomePage: React.FC = () => {
 
   const tasksByCategory = Object.entries(categoryLabels).map(([key, name]) => ({
     name,
-    count: tasks.filter(t => t.category === key as Category).length,
+    count: tasks.filter((t: Task) => t.category === key as Category).length,
     icon: categoryIcons[key as keyof typeof categoryIcons] || '📌',
     color: 'blue'
   })).filter(cat => cat.count > 0);

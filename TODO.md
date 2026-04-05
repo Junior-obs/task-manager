@@ -1,18 +1,14 @@
-# Task Manager Error Fix - COMPLETED
+# Task: Fix npm run build errors to 0
 
-## Steps Completed:
-- ✅ Analyzed project structure and ESLint errors
-- ✅ Fixed Navigation.tsx (useLayoutEffect for route change)
-- ✅ Fixed HomePage.tsx (removed sync setState in useEffect, sync localStorage parsing)
-- ✅ Verified ErrorBoundary.tsx clean
-- ✅ Verified AuthContext.tsx clean with proper sync init
-- ✅ Ran eslint checks - all errors resolved
+## Plan approved - Steps to complete:
 
-## Verification:
-Run: `npx eslint . --fix`
-Restart TS Server (Ctrl+Shift+P → TypeScript: Restart TS Server)
+### 1. [x] Add TaskContextType to src/types/index.ts
+### 2. [x] Fix imports in src/components/common/Navigation.tsx (add useRef/useEffect, remove unused)
+### 3. [x] Fix main.tsx (remove unused React, add ReactDOM import)
+### 4. [x] Fix AboutPage.tsx (add GitHub/LinkedIn imports)
+### 5. [x] Type fixes in HomePage.tsx (add Task types to filters/maps)
+### 6. [x] Type fixes in StatsPage.tsx (task: Task in forEach, remove unused i)
+### 7. [ ] Run npm run build and verify 0 errors
+### 8. [ ] If clean, attempt completion
 
-All red underlines should be gone. Code is production-ready.
-
-**Status: Fixed. No breaking changes to your code style/logic.**
-
+Progress will be updated after each step.

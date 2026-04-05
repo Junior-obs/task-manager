@@ -69,3 +69,15 @@ export const statusColors: Record<Status, string> = {
   'in-progress': 'bg-blue-100 text-blue-800',
   'done': 'bg-green-100 text-green-800'
 };
+
+export interface TaskContextType {
+  tasks: Task[];
+  filteredTasks: Task[];
+  filters: FilterOptions;
+  addTask: (task: TaskFormData) => void;
+  updateTask: (id: string, updates: Partial<Task>) => void;
+  deleteTask: (id: string) => void;
+  setFilters: (filters: Partial<FilterOptions>) => void;
+  resetFilters: () => void;
+  getTaskById: (id: string) => Task | undefined;
+}

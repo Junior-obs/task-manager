@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
-import type { TaskContextType } from './types';
+import type { TaskContextType } from '../types';
 import { useTasks } from '../hooks/useTasks';
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);

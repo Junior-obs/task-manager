@@ -21,9 +21,7 @@ const initializeUser = (): User | null => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('Failed to initialize user from localStorage:', error);
-    }
+    console.error('Failed to initialize user from localStorage:', error);
     if (typeof window !== 'undefined') {
       localStorage.removeItem('user');
     }
@@ -40,9 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       localStorage.setItem('user', JSON.stringify(userData));
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
         console.error('Failed to save user to localStorage:', error);
-      }
     }
   };
 
@@ -51,9 +47,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       localStorage.removeItem('user');
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
         console.error('Failed to remove user from localStorage:', error);
-      }
     }
   };
 

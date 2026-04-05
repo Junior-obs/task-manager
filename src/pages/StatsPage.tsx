@@ -1,4 +1,5 @@
 import { useTaskContext } from '../context/TaskContext';
+import type { Task } from '../types';
 import { useProtectedRoute } from '../hooks/useProtectedRoute';
 import { StatCard } from '../components/stats/StatCard';
 import {
@@ -58,7 +59,7 @@ export const StatsPage = () => {
     let completedTasksCount = 0;
     const now = new Date();
 
-    tasks.forEach((task) => {
+    tasks.forEach((task: Task) => {
       byStatus[task.status]++;
       byPriority[task.priority]++;
       byCategory[task.category] = (byCategory[task.category] || 0) + 1;
@@ -136,7 +137,8 @@ export const StatsPage = () => {
                   <XAxis type="number" axisLine={false} tickLine={false} />
                   <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} width={80} />
                   <Tooltip contentStyle={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '12px', border: 'none' }} />
-{statusChartData.map((e, i) => <Cell key={`status-${e.name}`} fill={e.color} />)}
+                  <Bar dataKey="value" />
+                  {statusChartData.map((e) => <Cell key={`status-${e.name}`} fill={e.color} />)}
                 </BarChart>
               </ResponsiveContainer>
             ) : <EmptyState message="Aucune donnée de statut" />}
@@ -152,7 +154,7 @@ export const StatsPage = () => {
               <ResponsiveContainer width="100%" height={320}>
                 <RePieChart>
                   <Pie data={priorityChartData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={2} dataKey="value" label={({ name, percent = 0 }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
-{priorityChartData.map((e, i) => <Cell key={`priority-${e.name}`} fill={e.color} />)}
+                    {priorityChartData.map((e) => <Cell key={`priority-${e.name}`} fill={e.color} />)}
                   </Pie>
                   <Tooltip />
                 </RePieChart>
