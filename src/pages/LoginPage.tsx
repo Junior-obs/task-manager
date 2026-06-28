@@ -27,26 +27,10 @@ export const LoginPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const registeredUsersJson = localStorage.getItem('registeredUsers');
-      const registeredUsers = registeredUsersJson ? JSON.parse(registeredUsersJson) : [];
-      
-      const foundUser = registeredUsers.find((u: { email: string; fullName: string }) => u.email === email);
-      
-      let fullName: string;
-      if (foundUser) {
-        fullName = foundUser.fullName;
-      } else {
-        // Générer un nom propre depuis l'email (uniquement si jamais l'utilisateur n'est pas dans registeredUsers)
-        const base = email.split('@')[0].replace(/[^a-zA-Z]/g, '');
-        fullName = base ? base.charAt(0).toUpperCase() + base.slice(1).toLowerCase() : 'Utilisateur';
-      }
-      
-      login(email, fullName);
-      // ✅ Navigation immédiate (pas besoin de setTimeout, login est synchrone)
+      await login(email, password);
       navigate('/', { replace: true });
     } catch (err) {
-      console.error('Login error:', err);
-      setError('Une erreur est survenue lors de la connexion');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue lors de la connexion');
       setLoading(false);
     }
   };

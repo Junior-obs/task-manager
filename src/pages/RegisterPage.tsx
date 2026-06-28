@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { register } = useAuth();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -69,24 +69,10 @@ export const RegisterPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const registeredUsersJson = localStorage.getItem('registeredUsers');
-      const registeredUsers = registeredUsersJson ? JSON.parse(registeredUsersJson) : [];
-      
-      const emailExists = registeredUsers.some((u: { email: string }) => u.email === email);
-      if (emailExists) {
-        setError('Cet email est déjà enregistré');
-        setLoading(false);
-        return;
-      }
-      
-      registeredUsers.push({ fullName, email });
-      localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
-      
-      login(email, fullName);
-      setTimeout(() => navigate('/', { replace: true }), 300);
+      await register(email, fullName, password);
+      navigate('/', { replace: true });
     } catch (err) {
-      console.error('Registration error:', err);
-      setError('Une erreur est survenue lors de l\'inscription');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'inscription');
       setLoading(false);
     }
   };

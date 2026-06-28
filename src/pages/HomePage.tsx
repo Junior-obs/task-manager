@@ -35,13 +35,13 @@ export const HomePage: React.FC = () => {
   });
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // Récupération du nom depuis localStorage
+  // Récupération du nom depuis localStorage (supporte les deux formats)
   const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
   const userName = (() => {
     if (!userStr) return 'Utilisateur';
     try {
-      const { fullName } = JSON.parse(userStr);
-      return fullName ? fullName.split(' ')[0] : 'Utilisateur';
+      const parsed = JSON.parse(userStr);
+      return (parsed.username || parsed.fullName || 'Utilisateur').split(' ')[0];
     } catch {
       return 'Utilisateur';
     }
