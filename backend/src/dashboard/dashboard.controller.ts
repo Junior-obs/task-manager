@@ -1,13 +1,7 @@
-import {
-  Controller,
-  Get,
-  Query,
-  UsePipes,
-  UseFilters,
-} from '@nestjs/common';
+import { Controller, Get, Query, UsePipes, UseFilters } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filters';
 
 @Controller('dashboard')
 @UseFilters(HttpExceptionFilter)

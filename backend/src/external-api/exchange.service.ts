@@ -7,7 +7,9 @@ export class ExchangeService {
 
   async getRates(baseCurrency: string = 'USD'): Promise<any> {
     try {
-      const response = await axios.get(`${this.apiUrl}/${baseCurrency.toUpperCase()}`);
+      const response = await axios.get(
+        `${this.apiUrl}/${baseCurrency.toUpperCase()}`,
+      );
 
       return {
         base: response.data.base,

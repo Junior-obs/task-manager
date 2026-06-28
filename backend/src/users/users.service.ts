@@ -19,7 +19,9 @@ export class UsersService {
     }
 
     // 2. Vérifier si l'adresse email est déjà prise
-    const existingUser = await this.usersRepository.findOne({ where: { email: userData.email } });
+    const existingUser = await this.usersRepository.findOne({
+      where: { email: userData.email },
+    });
     if (existingUser) {
       throw new BadRequestException('Cet email est déjà utilisé.');
     }
@@ -33,16 +35,16 @@ export class UsersService {
       ...userData,
       password: hashedPassword,
     });
-    
+
     const savedUser = await this.usersRepository.save(user);
-    
+
     // 5. Supprimer le mot de passe de l'objet renvoyé par sécurité
     delete (savedUser as any).password;
     return savedUser;
   }
 
   // Utilisé par le module d'authentification pour vérifier les identifiants au login
- // Utilisé par le module d'authentification pour vérifier les identifiants au login
+  // Utilisé par le module d'authentification pour vérifier les identifiants au login
   async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({
       where: { email },
@@ -51,7 +53,7 @@ export class UsersService {
         email: true,
         username: true,
         password: true,
-        role: true
+        role: true,
       }, // Force la sélection du password pour la vérification bcrypt
     });
   }

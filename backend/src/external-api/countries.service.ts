@@ -7,7 +7,9 @@ export class CountriesService {
 
   async getAllCountries(): Promise<any[]> {
     try {
-      const response = await axios.get(`${this.apiUrl}/all?fields=name,capital,population,region,flags`);
+      const response = await axios.get(
+        `${this.apiUrl}/all?fields=name,capital,population,region,flags`,
+      );
 
       return response.data.map((country: any) => ({
         name: country.name.common,
@@ -16,7 +18,7 @@ export class CountriesService {
         region: country.region,
         flag: country.flags?.png,
       }));
-    } catch (error) {
+    } catch {
       throw new HttpException(
         'Erreur lors de la récupération des pays',
         HttpStatus.BAD_GATEWAY,
@@ -37,7 +39,9 @@ export class CountriesService {
         region: country.region,
         subregion: country.subregion,
         languages: Object.values(country.languages || {}),
-        currencies: Object.values(country.currencies || {}).map((c: any) => c.name),
+        currencies: Object.values(country.currencies || {}).map(
+          (c: any) => c.name,
+        ),
         flag: country.flags?.png,
       };
     } catch (error) {
