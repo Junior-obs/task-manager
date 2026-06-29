@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { setupSwagger } from './docs/swagger';
 import { HttpExceptionFilter } from './common/filters/http-exception.filters';
@@ -9,6 +10,8 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   const app = await NestFactory.create(AppModule);
+
+  app.use(helmet());
 
   app.enableCors({
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],

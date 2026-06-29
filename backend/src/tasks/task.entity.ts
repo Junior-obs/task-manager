@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from '../users/entities/user.entity';
 
 export enum TaskStatus {
   TODO = 'todo',
@@ -63,6 +66,10 @@ export class Task {
 
   @Column({ nullable: true })
   userId: string;
+
+  @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @CreateDateColumn()
   createdAt: Date;

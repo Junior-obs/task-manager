@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, BarChart3, Info, LogOut, User, Menu, X, SquareCheckBig } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, BarChart3, Info, LogOut, User, Menu, X, SquareCheckBig, ListTodo } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from './ThemeToggle';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Tableau de bord' },
+  { to: '/tasks', icon: ListTodo, label: 'Mes tâches' },
   { to: '/add', icon: PlusCircle, label: 'Ajouter' },
   { to: '/stats', icon: BarChart3, label: 'Statistiques' },
   { to: '/about', icon: Info, label: 'À propos' },

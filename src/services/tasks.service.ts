@@ -12,6 +12,16 @@ export interface TaskData {
   updatedAt?: string;
 }
 
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 export interface TaskStats {
   total: number;
   byStatus: Record<string, number>;
@@ -22,8 +32,8 @@ export interface TaskStats {
 
 export const tasksService = {
   async getAll(): Promise<TaskData[]> {
-    const response = await api.get<TaskData[]>('/tasks');
-    return response.data;
+    const response = await api.get<PaginatedResponse<TaskData>>('/tasks');
+    return response.data.data;
   },
 
   async getById(id: string): Promise<TaskData> {

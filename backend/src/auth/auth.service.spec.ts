@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
@@ -26,10 +27,17 @@ describe('AuthService', () => {
     create: jest.fn().mockResolvedValue(mockUser),
     findByEmail: jest.fn().mockResolvedValue(mockUser),
     findById: jest.fn().mockResolvedValue(mockUser),
+    findByIdWithRefreshToken: jest.fn().mockResolvedValue(null),
+    findAll: jest.fn().mockResolvedValue([]),
+    updateRefreshToken: jest.fn().mockResolvedValue(undefined),
   };
 
   const mockJwtService = {
     sign: jest.fn().mockReturnValue('test-token'),
+  };
+
+  const mockConfigService = {
+    get: jest.fn().mockReturnValue('test-value'),
   };
 
   beforeEach(async () => {
@@ -39,12 +47,12 @@ describe('AuthService', () => {
         AuthService,
         { provide: UsersService, useValue: mockUsersService },
         { provide: JwtService, useValue: mockJwtService },
+        { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
     usersService = module.get<UsersService>(UsersService);
-    jwtService = module.get<JwtService>(JwtService);
   });
 
   it('should be defined', () => {

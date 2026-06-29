@@ -1,9 +1,23 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { User, UserRole } from '../users/entities/user.entity';
+
+interface FindAllOptions {
+  page?: number;
+  limit?: number;
+  status?: string;
+  priority?: string;
+  sortBy?: 'createdAt' | 'dueDate' | 'title' | 'priority';
+  sortOrder?: 'ASC' | 'DESC';
+}
 
 @Injectable()
 export class TasksService {
@@ -12,7 +26,7 @@ export class TasksService {
     private readonly tasksRepository: Repository<Task>,
   ) {}
 
-  async create(createTaskDto: CreateTaskDto, userId?: string): Promise<Task> {
+  async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
     const task = this.tasksRepository.create({
       ...createTaskDto,
       userId,
@@ -20,33 +34,82 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async findAll(userId?: string): Promise<Task[]> {
-    const where = userId ? { userId } : {};
-    return this.tasksRepository.find({ where, order: { createdAt: 'DESC' } });
+  async findAll(userId: string | undefined, options?: FindAllOptions) {
+    const where: any = {};
+    if (userId) {
+      where.userId = userId;
+    }
+    if (options?.status) {
+      where.status = options.status;
+    }
+    if (options?.priority) {
+      where.priority = options.priority;
+    }
+
+    const page = options?.page || 1;
+    const limit = options?.limit || 50;
+    const skip = (page - 1) * limit;
+
+    const order: any = {};
+    if (options?.sortBy) {
+      const sortField = options.sortBy === 'priority'
+        ? `CASE WHEN priority = 'high' THEN 3 WHEN priority = 'medium' THEN 2 ELSE 1 END`
+        : options.sortBy;
+      order[sortField] = options.sortOrder || 'DESC';
+    } else {
+      order.createdAt = 'DESC';
+    }
+
+    const [tasks, total] = await this.tasksRepository.findAndCount({
+      where,
+      order,
+      skip,
+      take: limit,
+    });
+
+    return {
+      data: tasks,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
-  async findOne(id: string): Promise<Task> {
+  async findOne(id: string, user: User): Promise<Task> {
     const task = await this.tasksRepository.findOne({ where: { id } });
     if (!task) {
       throw new NotFoundException(`La tâche avec l'ID ${id} n'existe pas`);
     }
+    if (user.role !== UserRole.ADMIN && task.userId !== user.id) {
+      throw new ForbiddenException(
+        "Vous n'avez pas accès à cette tâche",
+      );
+    }
     return task;
   }
 
-  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const task = await this.findOne(id);
+  async update(
+    id: string,
+    updateTaskDto: UpdateTaskDto,
+    user: User,
+  ): Promise<Task> {
+    const task = await this.findOne(id, user);
     this.tasksRepository.merge(task, updateTaskDto);
     return this.tasksRepository.save(task);
   }
 
-  async remove(id: string): Promise<void> {
-    const task = await this.findOne(id);
+  async remove(id: string, user: User): Promise<void> {
+    const task = await this.findOne(id, user);
     await this.tasksRepository.remove(task);
   }
 
-  async getStats(userId?: string) {
-    const where = userId ? { userId } : {};
-    const tasks = await this.tasksRepository.find({ where });
+  async getStats(userId: string) {
+    const tasks = await this.tasksRepository.find({
+      where: { userId },
+    });
 
     const total = tasks.length;
     const byStatus = { todo: 0, 'in-progress': 0, done: 0 };
