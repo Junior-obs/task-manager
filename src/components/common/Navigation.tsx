@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, PlusCircle, BarChart3, Info, LogOut, User, Menu, X, SquareCheckBig } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from './ThemeToggle';
@@ -13,18 +13,10 @@ const navItems = [
 
 export const Navigation: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Close mobile menu on route change
-  const prevPathnameRef = useRef(location.pathname);
-  useEffect(() => {
-    if (prevPathnameRef.current !== location.pathname) {
-      setIsMobileMenuOpen(false);
-      prevPathnameRef.current = location.pathname;
-    }
-  }, [location.pathname]);
+  // Close mobile menu on route change is handled by NavLink onClick
 
 const handleLogout = () => {
   logout();

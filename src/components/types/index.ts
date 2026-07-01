@@ -15,7 +15,7 @@ export interface Task {
 }
 
 
-export interface TaskFormData extends Omit<Task, 'id'> {}
+export type TaskFormData = Omit<Task, 'id'>;
 
 // 4. Les dictionnaires de labels (utilisés par les deux)
 export const priorityLabels: Record<Priority, string> = {
