@@ -35,13 +35,13 @@ export const HomePage: React.FC = () => {
   });
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // Récupération du nom depuis localStorage
+  // Récupération du nom depuis localStorage (supporte les deux formats)
   const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
   const userName = (() => {
     if (!userStr) return 'Utilisateur';
     try {
-      const { fullName } = JSON.parse(userStr);
-      return fullName ? fullName.split(' ')[0] : 'Utilisateur';
+      const parsed = JSON.parse(userStr);
+      return (parsed.username || parsed.fullName || 'Utilisateur').split(' ')[0];
     } catch {
       return 'Utilisateur';
     }
@@ -201,7 +201,7 @@ export const HomePage: React.FC = () => {
               {tasks.filter(t => t.priority === 'high' && t.status !== 'done').length > 0 ? (
                 <div className="space-y-4">
                   {tasks.filter(t => t.priority === 'high' && t.status !== 'done').slice(0, 3).map((task) => (
-                    <div key={task.id} className="group p-4 bg-red-50 dark:bg-red-950/30 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/50 transition-all cursor-pointer" onClick={() => navigate(`/edit/${task.id}`)}>
+                    <div key={task.id} className="group p-4 bg-red-50 dark:bg-red-950/30 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/50 transition-all cursor-pointer" onClick={() => navigate(`/task/${task.id}`)}>
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <h3 className="font-semibold text-slate-900 dark:text-white">{task.title}</h3>
@@ -264,7 +264,7 @@ export const HomePage: React.FC = () => {
             {tasks.length > 0 ? (
               <div className="space-y-3">
                 {tasks.slice(0, 5).map((task) => (
-                  <div key={task.id} className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all cursor-pointer" onClick={() => navigate(`/edit/${task.id}`)}>
+                  <div key={task.id} className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all cursor-pointer" onClick={() => navigate(`/task/${task.id}`)}>
                     <div className="flex items-center gap-4 flex-1">
                       <div className={`w-2 h-2 rounded-full ${task.status === 'done' ? 'bg-emerald-500' : task.priority === 'high' ? 'bg-red-500' : task.priority === 'medium' ? 'bg-amber-500' : 'bg-blue-500'}`} />
                       <div className="flex-1">

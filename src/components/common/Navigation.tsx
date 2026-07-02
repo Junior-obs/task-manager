@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, BarChart3, Info, LogOut, User, Menu, X, SquareCheckBig } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, BarChart3, Info, LogOut, User, Menu, X, SquareCheckBig, ListTodo } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from './ThemeToggle';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Tableau de bord' },
+  { to: '/tasks', icon: ListTodo, label: 'Mes tâches' },
   { to: '/add', icon: PlusCircle, label: 'Ajouter' },
   { to: '/stats', icon: BarChart3, label: 'Statistiques' },
   { to: '/about', icon: Info, label: 'À propos' },
@@ -70,11 +71,11 @@ const handleLogout = () => {
             {/* Actions droite */}
             <div className="flex items-center gap-2">
               <ThemeToggle />
-              {user?.fullName && (
+              {user?.username && (
                 <div className="hidden md:flex items-center gap-2 bg-gray-100/80 dark:bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-200/50 dark:border-slate-700/50">
                   <User size={14} className="text-indigo-600 dark:text-indigo-400" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                    {user.fullName.split(' ')[0]}
+                    {user.username.split(' ')[0]}
                   </span>
                 </div>
               )}
@@ -144,14 +145,14 @@ const handleLogout = () => {
 
             {/* Footer du menu avec infos utilisateur */}
             <div className="p-4 border-t border-slate-200 dark:border-slate-700 space-y-3">
-              {user?.fullName && (
+              {user?.username && (
                 <div className="flex items-center gap-3 px-2 py-2 bg-gray-50 dark:bg-slate-800 rounded-xl">
                   <div className="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-full">
                     <User size={18} className="text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 dark:text-gray-400">Connecté en tant que</p>
-                    <p className="text-sm font-semibold text-gray-800 dark:text-white">{user.fullName}</p>
+                    <p className="text-sm font-semibold text-gray-800 dark:text-white">{user.username}</p>
                   </div>
                 </div>
               )}

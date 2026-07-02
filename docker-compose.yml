@@ -1,0 +1,13 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_TYPE=sqlite
+      - JWT_SECRET=${JWT_SECRET:-change_me_in_prod}
+    volumes:
+      - ./backend/data:/app/data

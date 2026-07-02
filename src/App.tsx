@@ -9,6 +9,8 @@ import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { TaskFormPage } from './pages/TaskFormPage';
+import { TasksPage } from './pages/TasksPage';
+import { TaskDetailPage } from './pages/TaskDetailPage';
 import { StatsPage } from './pages/StatsPage';
 import { AboutPage } from './pages/AboutPage';
 import './App.css';
@@ -49,6 +51,8 @@ function AppContent() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/add" element={<TaskFormPage />} />
               <Route path="/edit/:id" element={<TaskFormPage />} />
+              <Route path="/tasks" element={<TasksPage />} />
+              <Route path="/task/:id" element={<TaskDetailPage />} />
               <Route path="/stats" element={<StatsPage />} />
               <Route path="/about" element={<AboutPage />} />
             </Routes>

@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.gitignore
+*.md
+task_manager.sqlite
+test
+.eslintrc.*
+.prettierrc
+tsconfig*.json
+nest-cli.json
