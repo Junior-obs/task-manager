@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
 import { User, UserRole } from '../users/entities/user.entity';
@@ -29,9 +30,9 @@ describe('TasksService', () => {
     id: '1',
     title: 'Test Task',
     description: 'Test Description',
-    status: 'todo' as any,
-    priority: 'medium' as any,
-    category: 'work' as any,
+    status: TaskStatus.TODO,
+    priority: TaskPriority.MEDIUM,
+    category: TaskCategory.WORK,
     dueDate: '2026-07-01',
     userId: 'user1',
     user: mockUser,
@@ -71,8 +72,11 @@ describe('TasksService', () => {
     it('should create a task with userId', async () => {
       const dto = { title: 'Test Task', description: 'Test' };
       const result = await service.create(dto, 'user1');
-      expect(repo.create).toHaveBeenCalledWith({ ...dto, userId: 'user1' });
-      expect(repo.save).toHaveBeenCalled();
+      expect(jest.spyOn(repo, 'create')).toHaveBeenCalledWith({
+        ...dto,
+        userId: 'user1',
+      });
+      expect(jest.spyOn(repo, 'save')).toHaveBeenCalled();
       expect(result).toEqual(mockTask);
     });
   });

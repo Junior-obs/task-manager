@@ -39,10 +39,10 @@ async function bootstrap() {
   setupSwagger(app);
 
   const configService = app.get(ConfigService);
-  const port = configService.get('port');
+  const port = configService.get<string | number>('port') ?? 3000;
 
   await app.listen(port);
   logger.log(`Application démarrée sur http://localhost:${port}`);
   logger.log(`Documentation Swagger: http://localhost:${port}/api/docs`);
 }
-bootstrap();
+void bootstrap();

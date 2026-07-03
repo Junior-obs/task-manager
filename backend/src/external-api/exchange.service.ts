@@ -1,13 +1,34 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+
+export interface ExchangeRatesResponse {
+  base: string;
+  date: string;
+  rates: Record<string, number>;
+}
+
+export interface ExchangeRatesResult {
+  base: string;
+  date: string;
+  rates: Record<string, number>;
+}
+
+export interface ConversionResult {
+  from: string;
+  to: string;
+  amount: number;
+  convertedAmount: number;
+  rate: number;
+  date: string;
+}
 
 @Injectable()
 export class ExchangeService {
   private readonly apiUrl = 'https://api.exchangerate-api.com/v4/latest';
 
-  async getRates(baseCurrency: string = 'USD'): Promise<any> {
+  async getRates(baseCurrency: string = 'USD'): Promise<ExchangeRatesResult> {
     try {
-      const response = await axios.get(
+      const response = await axios.get<ExchangeRatesResponse>(
         `${this.apiUrl}/${baseCurrency.toUpperCase()}`,
       );
 
@@ -17,7 +38,8 @@ export class ExchangeService {
         rates: response.data.rates,
       };
     } catch (error) {
-      if (error.response?.status === 404) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 404) {
         throw new HttpException(
           `Devise "${baseCurrency}" invalide`,
           HttpStatus.NOT_FOUND,
@@ -30,9 +52,15 @@ export class ExchangeService {
     }
   }
 
-  async convert(amount: number, from: string, to: string): Promise<any> {
+  async convert(
+    amount: number,
+    from: string,
+    to: string,
+  ): Promise<ConversionResult> {
     try {
-      const response = await axios.get(`${this.apiUrl}/${from.toUpperCase()}`);
+      const response = await axios.get<ExchangeRatesResponse>(
+        `${this.apiUrl}/${from.toUpperCase()}`,
+      );
       const rate = response.data.rates[to.toUpperCase()];
 
       if (!rate) {

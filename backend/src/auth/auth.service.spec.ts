@@ -20,7 +20,7 @@ describe('AuthService', () => {
     email: 'test@test.com',
     username: 'testuser',
     password: 'hashedpassword',
-    role: 'user' as any,
+    role: 'user' as User['role'],
   };
 
   const mockUsersService = {
@@ -57,6 +57,7 @@ describe('AuthService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+    expect(usersService).toBeDefined();
   });
 
   describe('register', () => {
@@ -67,7 +68,7 @@ describe('AuthService', () => {
         password: 'password123',
       };
       const result = await service.register(dto);
-      expect(usersService.create).toHaveBeenCalledWith(dto);
+      expect(mockUsersService.create).toHaveBeenCalledWith(dto);
       expect(result).toEqual(mockUser);
     });
   });
