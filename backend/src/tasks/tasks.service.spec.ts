@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { TasksService } from './tasks.service';
-import { Task } from './task.entity';
+import { Task, TaskStatus, TaskPriority, TaskCategory } from './task.entity';
 import { User, UserRole } from '../users/entities/user.entity';
 
 describe('TasksService', () => {
