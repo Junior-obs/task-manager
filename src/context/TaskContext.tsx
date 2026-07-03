@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
-import type { Task, TaskFormData, FilterOptions } from '../types';
-import { tasksService } from '../services/tasks.service';
+import type { Task, TaskFormData, FilterOptions, Status, Priority, Category } from '../types';
+import { tasksService, type TaskData } from '../services/tasks.service';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface TaskContextType {
@@ -25,14 +25,14 @@ const initialFilters: FilterOptions = {
   searchQuery: '',
 };
 
-function mapApiTaskToTask(apiTask: any): Task {
+function mapApiTaskToTask(apiTask: TaskData): Task {
   return {
-    id: apiTask.id,
+    id: apiTask.id!,
     title: apiTask.title,
     description: apiTask.description || '',
-    status: apiTask.status || 'todo',
-    priority: apiTask.priority || 'medium',
-    category: apiTask.category || 'other',
+    status: (apiTask.status || 'todo') as Status,
+    priority: (apiTask.priority || 'medium') as Priority,
+    category: (apiTask.category || 'other') as Category,
     dueDate: apiTask.dueDate || '',
     createdAt: apiTask.createdAt || new Date().toISOString(),
     updatedAt: apiTask.updatedAt || new Date().toISOString(),

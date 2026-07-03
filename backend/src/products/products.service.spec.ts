@@ -14,7 +14,7 @@ describe('ProductsService', () => {
     price: 29.99,
     stock: 10,
     categoryId: 1,
-    category: null as any,
+    category: null,
   };
 
   const createMockRepo = () => ({
@@ -53,7 +53,7 @@ describe('ProductsService', () => {
         stock: 10,
         categoryId: 1,
       };
-      const result = await service.create(dto as any);
+      const result = await service.create(dto);
       expect(repo.create).toHaveBeenCalledWith(dto);
       expect(repo.save).toHaveBeenCalled();
       expect(result).toEqual(mockProduct);
@@ -90,7 +90,7 @@ describe('ProductsService', () => {
   describe('update', () => {
     it('should update a product', async () => {
       const dto = { name: 'Updated', price: 39.99 };
-      const result = await service.update(1, dto as any);
+      const result = await service.update(1, dto);
       expect(repo.merge).toHaveBeenCalled();
       expect(repo.save).toHaveBeenCalled();
       expect(result).toEqual(mockProduct);

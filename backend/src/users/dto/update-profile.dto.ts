@@ -3,7 +3,7 @@ import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '../entities/user.entity';
 
 export class UpdateProfileDto {
-  @ApiPropertyOptional({ description: 'Nouveau nom d\'utilisateur' })
+  @ApiPropertyOptional({ description: "Nouveau nom d'utilisateur" })
   @IsOptional()
   @IsString()
   username?: string;

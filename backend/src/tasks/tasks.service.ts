@@ -52,9 +52,10 @@ export class TasksService {
 
     const order: any = {};
     if (options?.sortBy) {
-      const sortField = options.sortBy === 'priority'
-        ? `CASE WHEN priority = 'high' THEN 3 WHEN priority = 'medium' THEN 2 ELSE 1 END`
-        : options.sortBy;
+      const sortField =
+        options.sortBy === 'priority'
+          ? `CASE WHEN priority = 'high' THEN 3 WHEN priority = 'medium' THEN 2 ELSE 1 END`
+          : options.sortBy;
       order[sortField] = options.sortOrder || 'DESC';
     } else {
       order.createdAt = 'DESC';
@@ -84,9 +85,7 @@ export class TasksService {
       throw new NotFoundException(`La tâche avec l'ID ${id} n'existe pas`);
     }
     if (user.role !== UserRole.ADMIN && task.userId !== user.id) {
-      throw new ForbiddenException(
-        "Vous n'avez pas accès à cette tâche",
-      );
+      throw new ForbiddenException("Vous n'avez pas accès à cette tâche");
     }
     return task;
   }

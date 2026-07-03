@@ -11,7 +11,13 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -29,7 +35,10 @@ export class ProductsController {
   @Roles(UserRole.ADMIN)
   @Post()
   @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Créer un produit (admin)', description: 'Crée un nouveau produit (admin seulement)' })
+  @ApiOperation({
+    summary: 'Créer un produit (admin)',
+    description: 'Crée un nouveau produit (admin seulement)',
+  })
   @ApiResponse({ status: 201, description: 'Produit créé' })
   @ApiResponse({ status: 403, description: 'Accès refusé (admin requis)' })
   create(@Body() createProductDto: CreateProductDto) {
@@ -37,7 +46,10 @@ export class ProductsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Lister les produits', description: 'Liste tous les produits avec pagination' })
+  @ApiOperation({
+    summary: 'Lister les produits',
+    description: 'Liste tous les produits avec pagination',
+  })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiResponse({ status: 200, description: 'Liste des produits' })
@@ -49,7 +61,10 @@ export class ProductsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Détail d\'un produit', description: 'Retourne les détails d\'un produit' })
+  @ApiOperation({
+    summary: "Détail d'un produit",
+    description: "Retourne les détails d'un produit",
+  })
   @ApiResponse({ status: 200, description: 'Produit trouvé' })
   @ApiResponse({ status: 404, description: 'Produit introuvable' })
   findOne(@Param('id') id: string) {
@@ -60,7 +75,10 @@ export class ProductsController {
   @Roles(UserRole.ADMIN)
   @Patch(':id')
   @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Modifier un produit (admin)', description: 'Met à jour un produit existant (admin seulement)' })
+  @ApiOperation({
+    summary: 'Modifier un produit (admin)',
+    description: 'Met à jour un produit existant (admin seulement)',
+  })
   @ApiResponse({ status: 200, description: 'Produit modifié' })
   @ApiResponse({ status: 403, description: 'Accès refusé (admin requis)' })
   @ApiResponse({ status: 404, description: 'Produit introuvable' })
@@ -73,7 +91,10 @@ export class ProductsController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Supprimer un produit (admin)', description: 'Supprime un produit (admin seulement)' })
+  @ApiOperation({
+    summary: 'Supprimer un produit (admin)',
+    description: 'Supprime un produit (admin seulement)',
+  })
   @ApiResponse({ status: 204, description: 'Produit supprimé' })
   @ApiResponse({ status: 403, description: 'Accès refusé (admin requis)' })
   async remove(@Param('id') id: string) {

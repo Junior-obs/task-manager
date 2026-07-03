@@ -45,7 +45,7 @@ describe('CategoriesService', () => {
   describe('create', () => {
     it('should create a category', async () => {
       const dto = { name: 'New Category', description: 'Description' };
-      const result = await service.create(dto as any);
+      const result = await service.create(dto);
       expect(repo.create).toHaveBeenCalledWith(dto);
       expect(repo.save).toHaveBeenCalled();
       expect(result).toEqual(mockCategory);
@@ -82,7 +82,7 @@ describe('CategoriesService', () => {
   describe('update', () => {
     it('should update a category', async () => {
       const dto = { name: 'Updated' };
-      const result = await service.update(1, dto as any);
+      const result = await service.update(1, dto);
       expect(repo.merge).toHaveBeenCalled();
       expect(repo.save).toHaveBeenCalled();
       expect(result).toEqual(mockCategory);

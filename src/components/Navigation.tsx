@@ -1,9 +1,10 @@
  import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, BarChart3, Info } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, BarChart3, Info, ListTodo } from 'lucide-react';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Tableau de bord' },
+  { to: '/tasks', icon: ListTodo, label: 'Mes tâches' },
   { to: '/add', icon: PlusCircle, label: 'Ajouter' },
   { to: '/stats', icon: BarChart3, label: 'Statistiques' },
   { to: '/about', icon: Info, label: 'À propos' },

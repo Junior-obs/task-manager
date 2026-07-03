@@ -70,7 +70,7 @@ describe('TasksService', () => {
   describe('create', () => {
     it('should create a task with userId', async () => {
       const dto = { title: 'Test Task', description: 'Test' };
-      const result = await service.create(dto as any, 'user1');
+      const result = await service.create(dto, 'user1');
       expect(repo.create).toHaveBeenCalledWith({ ...dto, userId: 'user1' });
       expect(repo.save).toHaveBeenCalled();
       expect(result).toEqual(mockTask);
@@ -117,7 +117,7 @@ describe('TasksService', () => {
   describe('update', () => {
     it('should update a task', async () => {
       const dto = { title: 'Updated' };
-      const result = await service.update('1', dto as any, mockUser);
+      const result = await service.update('1', dto, mockUser);
       expect(repo.merge).toHaveBeenCalled();
       expect(repo.save).toHaveBeenCalled();
       expect(result).toEqual(mockTask);

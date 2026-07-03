@@ -1,10 +1,11 @@
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import {
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { DashboardService } from './dashboard.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -16,9 +17,17 @@ export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('summary')
-  @ApiOperation({ summary: 'Résumé du tableau de bord', description: 'Agrège météo, informations pays et taux de change' })
+  @ApiOperation({
+    summary: 'Résumé du tableau de bord',
+    description: 'Agrège météo, informations pays et taux de change',
+  })
   @ApiQuery({ name: 'city', required: false, type: String, example: 'Dakar' })
-  @ApiQuery({ name: 'country', required: false, type: String, example: 'Senegal' })
+  @ApiQuery({
+    name: 'country',
+    required: false,
+    type: String,
+    example: 'Senegal',
+  })
   @ApiQuery({ name: 'currency', required: false, type: String, example: 'USD' })
   @ApiResponse({ status: 200, description: 'Résumé complet' })
   async getSummary(
@@ -30,7 +39,10 @@ export class DashboardController {
   }
 
   @Get('weather')
-  @ApiOperation({ summary: 'Météo', description: 'Retourne la météo d\'une ville via OpenWeatherMap' })
+  @ApiOperation({
+    summary: 'Météo',
+    description: "Retourne la météo d'une ville via OpenWeatherMap",
+  })
   @ApiQuery({ name: 'city', required: true, type: String, example: 'Dakar' })
   @ApiResponse({ status: 200, description: 'Données météo' })
   @ApiResponse({ status: 404, description: 'Ville introuvable' })
@@ -39,7 +51,10 @@ export class DashboardController {
   }
 
   @Get('country')
-  @ApiOperation({ summary: 'Informations pays', description: 'Retourne les informations d\'un pays via RestCountries' })
+  @ApiOperation({
+    summary: 'Informations pays',
+    description: "Retourne les informations d'un pays via RestCountries",
+  })
   @ApiQuery({ name: 'name', required: true, type: String, example: 'Senegal' })
   @ApiResponse({ status: 200, description: 'Informations pays' })
   @ApiResponse({ status: 404, description: 'Pays introuvable' })
@@ -48,7 +63,10 @@ export class DashboardController {
   }
 
   @Get('exchange')
-  @ApiOperation({ summary: 'Taux de change', description: 'Retourne les taux de change via ExchangeRate-API' })
+  @ApiOperation({
+    summary: 'Taux de change',
+    description: 'Retourne les taux de change via ExchangeRate-API',
+  })
   @ApiQuery({ name: 'base', required: false, type: String, example: 'USD' })
   @ApiResponse({ status: 200, description: 'Taux de change' })
   async getExchangeRates(@Query('base') base: string = 'USD') {
@@ -56,7 +74,10 @@ export class DashboardController {
   }
 
   @Get('convert')
-  @ApiOperation({ summary: 'Conversion de devises', description: 'Convertit un montant d\'une devise à une autre' })
+  @ApiOperation({
+    summary: 'Conversion de devises',
+    description: "Convertit un montant d'une devise à une autre",
+  })
   @ApiQuery({ name: 'amount', required: true, type: Number, example: 100 })
   @ApiQuery({ name: 'from', required: true, type: String, example: 'USD' })
   @ApiQuery({ name: 'to', required: true, type: String, example: 'EUR' })

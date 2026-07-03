@@ -47,8 +47,8 @@ describe('RolesGuard', () => {
 
   it('should deny access if no user', () => {
     reflector.getAllAndOverride.mockReturnValue([UserRole.USER]);
-    expect(() =>
-      guard.canActivate(mockContext(null)),
-    ).toThrow(ForbiddenException);
+    expect(() => guard.canActivate(mockContext(null))).toThrow(
+      ForbiddenException,
+    );
   });
 });

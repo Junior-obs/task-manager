@@ -7,7 +7,10 @@ export class CreateCategoryDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional({ description: 'Description de la catégorie', example: 'Produits et accessoires informatiques' })
+  @ApiPropertyOptional({
+    description: 'Description de la catégorie',
+    example: 'Produits et accessoires informatiques',
+  })
   @IsOptional()
   @IsString()
   description?: string;

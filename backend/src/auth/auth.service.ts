@@ -56,9 +56,14 @@ export class AuthService {
     let foundUser: any = null;
 
     for (const user of users) {
-      const userWithToken = await this.usersService.findByIdWithRefreshToken(user.id);
+      const userWithToken = await this.usersService.findByIdWithRefreshToken(
+        user.id,
+      );
       if (userWithToken?.refreshToken) {
-        const isValid = await bcrypt.compare(refreshToken, userWithToken.refreshToken);
+        const isValid = await bcrypt.compare(
+          refreshToken,
+          userWithToken.refreshToken,
+        );
         if (isValid) {
           foundUser = userWithToken;
           break;
@@ -72,9 +77,16 @@ export class AuthService {
 
     const newRefreshToken = crypto.randomBytes(32).toString('hex');
     const hashedNewRefreshToken = await bcrypt.hash(newRefreshToken, 10);
-    await this.usersService.updateRefreshToken(foundUser.id, hashedNewRefreshToken);
+    await this.usersService.updateRefreshToken(
+      foundUser.id,
+      hashedNewRefreshToken,
+    );
 
-    const payload = { email: foundUser.email, sub: foundUser.id, role: foundUser.role };
+    const payload = {
+      email: foundUser.email,
+      sub: foundUser.id,
+      role: foundUser.role,
+    };
 
     return {
       access_token: this.jwtService.sign(payload),
