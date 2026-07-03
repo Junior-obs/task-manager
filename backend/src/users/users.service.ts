@@ -39,7 +39,8 @@ export class UsersService {
     const savedUser = await this.usersRepository.save(user);
 
     // 5. Supprimer le mot de passe de l'objet renvoyé par sécurité
-    delete (savedUser as any).password;
+    const userWithPassword = savedUser as User & { password?: string };
+    delete userWithPassword.password;
     return savedUser;
   }
 

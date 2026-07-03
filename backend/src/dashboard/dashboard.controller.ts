@@ -10,7 +10,7 @@ export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('summary')
-  async getSummary(
+  getSummary(
     @Query('city') city: string = 'Dakar',
     @Query('country') country: string = 'Senegal',
     @Query('currency') currency: string = 'USD',
@@ -19,22 +19,22 @@ export class DashboardController {
   }
 
   @Get('weather')
-  async getWeather(@Query('city') city: string) {
+  getWeather(@Query('city') city: string) {
     return this.dashboardService.getWeather(city);
   }
 
   @Get('country')
-  async getCountry(@Query('name') name: string) {
+  getCountry(@Query('name') name: string) {
     return this.dashboardService.getCountry(name);
   }
 
   @Get('exchange')
-  async getExchangeRates(@Query('base') base: string = 'USD') {
+  getExchangeRates(@Query('base') base: string = 'USD') {
     return this.dashboardService.getExchangeRates(base);
   }
 
   @Get('convert')
-  async convertCurrency(
+  convertCurrency(
     @Query('amount') amount: number,
     @Query('from') from: string,
     @Query('to') to: string,

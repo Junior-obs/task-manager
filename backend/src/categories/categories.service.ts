@@ -10,7 +10,7 @@ export class CategoriesService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: any) {
+  async create(createCategoryDto: Partial<Category>) {
     const category = this.categoryRepository.create(createCategoryDto);
     return await this.categoryRepository.save(category);
   }
@@ -27,7 +27,7 @@ export class CategoriesService {
     return category;
   }
 
-  async update(id: number, updateCategoryDto: any) {
+  async update(id: number, updateCategoryDto: Partial<Category>) {
     const category = await this.findOne(id);
     this.categoryRepository.merge(category, updateCategoryDto);
     return await this.categoryRepository.save(category);

@@ -11,11 +11,7 @@ export class DashboardService {
     private readonly exchangeService: ExchangeService,
   ) {}
 
-  async getSummary(
-    city: string,
-    country: string,
-    currency: string,
-  ): Promise<any> {
+  async getSummary(city: string, country: string, currency: string) {
     const [weather, countryInfo, rates] = await Promise.all([
       this.weatherService.getWeather(city),
       this.countriesService.getCountryByName(country),
@@ -30,23 +26,19 @@ export class DashboardService {
     };
   }
 
-  async getWeather(city: string): Promise<any> {
+  async getWeather(city: string) {
     return this.weatherService.getWeather(city);
   }
 
-  async getCountry(name: string): Promise<any> {
+  async getCountry(name: string) {
     return this.countriesService.getCountryByName(name);
   }
 
-  async getExchangeRates(base: string): Promise<any> {
+  async getExchangeRates(base: string) {
     return this.exchangeService.getRates(base);
   }
 
-  async convertCurrency(
-    amount: number,
-    from: string,
-    to: string,
-  ): Promise<any> {
+  async convertCurrency(amount: number, from: string, to: string) {
     return this.exchangeService.convert(amount, from, to);
   }
 }

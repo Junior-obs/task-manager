@@ -7,15 +7,17 @@ import {
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
+type Constructable = new (...args: unknown[]) => unknown;
+
 @Injectable()
-export class ValidationPipe implements PipeTransform<any> {
-  async transform(value: any, { metatype }: ArgumentMetadata) {
+export class ValidationPipe implements PipeTransform<unknown> {
+  async transform(value: unknown, { metatype }: ArgumentMetadata) {
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }
 
-    const object = plainToInstance(metatype, value);
-    const errors = await validate(object);
+    const object = plainToInstance(metatype as Constructable, value);
+    const errors = await validate(object as object);
 
     if (errors.length > 0) {
       const messages = errors.map((err) =>
@@ -31,8 +33,8 @@ export class ValidationPipe implements PipeTransform<any> {
     return object;
   }
 
-  private toValidate(metatype: any): boolean {
-    const types: any[] = [String, Boolean, Number, Array, Object];
+  private toValidate(metatype: Constructable): boolean {
+    const types: Constructable[] = [String, Boolean, Number, Array, Object];
     return !types.includes(metatype);
   }
 }

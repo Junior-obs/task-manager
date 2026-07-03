@@ -13,6 +13,11 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { User } from '../users/entities/user.entity';
+
+interface AuthenticatedRequest {
+  user: User;
+}
 
 @Controller('tasks')
 export class TasksController {
@@ -20,20 +25,23 @@ export class TasksController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto, @Request() req) {
-    return this.tasksService.create(createTaskDto, req.user?.id);
+  create(
+    @Body() createTaskDto: CreateTaskDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.tasksService.create(createTaskDto, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@Request() req) {
-    return this.tasksService.findAll(req.user?.id);
+  findAll(@Request() req: AuthenticatedRequest) {
+    return this.tasksService.findAll(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('stats')
-  getStats(@Request() req) {
-    return this.tasksService.getStats(req.user?.id);
+  getStats(@Request() req: AuthenticatedRequest) {
+    return this.tasksService.getStats(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { TasksService } from './tasks.service';
-import { Task } from './task.entity';
+import { Task, TaskStatus, TaskPriority, TaskCategory } from './task.entity';
 
 describe('TasksService', () => {
   let service: TasksService;
@@ -11,9 +12,9 @@ describe('TasksService', () => {
     id: '1',
     title: 'Test Task',
     description: 'Test Description',
-    status: 'todo' as any,
-    priority: 'medium' as any,
-    category: 'work' as any,
+    status: TaskStatus.TODO,
+    priority: TaskPriority.MEDIUM,
+    category: TaskCategory.WORK,
     dueDate: '2026-07-01',
     userId: 'user1',
     createdAt: new Date(),
@@ -55,11 +56,14 @@ describe('TasksService', () => {
     it('should create a task', async () => {
       const module = await setupModule();
       service = module.get<TasksService>(TasksService);
-      const repo = module.get(getRepositoryToken(Task));
+      const repo = module.get<Repository<Task>>(getRepositoryToken(Task));
       const dto = { title: 'Test Task', description: 'Test' };
       const result = await service.create(dto, 'user1');
-      expect(repo.create).toHaveBeenCalledWith({ ...dto, userId: 'user1' });
-      expect(repo.save).toHaveBeenCalled();
+      expect(jest.spyOn(repo, 'create')).toHaveBeenCalledWith({
+        ...dto,
+        userId: 'user1',
+      });
+      expect(jest.spyOn(repo, 'save')).toHaveBeenCalled();
       expect(result).toEqual(mockTask);
     });
   });
@@ -68,9 +72,9 @@ describe('TasksService', () => {
     it('should return an array of tasks', async () => {
       const module = await setupModule();
       service = module.get<TasksService>(TasksService);
-      const repo = module.get(getRepositoryToken(Task));
+      const repo = module.get<Repository<Task>>(getRepositoryToken(Task));
       const result = await service.findAll('user1');
-      expect(repo.find).toHaveBeenCalledWith({
+      expect(jest.spyOn(repo, 'find')).toHaveBeenCalledWith({
         where: { userId: 'user1' },
         order: { createdAt: 'DESC' },
       });
@@ -82,16 +86,18 @@ describe('TasksService', () => {
     it('should return a task by id', async () => {
       const module = await setupModule();
       service = module.get<TasksService>(TasksService);
-      const repo = module.get(getRepositoryToken(Task));
+      const repo = module.get<Repository<Task>>(getRepositoryToken(Task));
       const result = await service.findOne('1');
-      expect(repo.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
       expect(result).toEqual(mockTask);
     });
 
     it('should throw NotFoundException if task not found', async () => {
       const module = await setupModule();
       service = module.get<TasksService>(TasksService);
-      const repo = module.get(getRepositoryToken(Task));
+      const repo = module.get<Repository<Task>>(getRepositoryToken(Task));
       jest.spyOn(repo, 'findOne').mockResolvedValue(null);
       await expect(service.findOne('999')).rejects.toThrow();
     });
@@ -101,10 +107,12 @@ describe('TasksService', () => {
     it('should delete a task', async () => {
       const module = await setupModule();
       service = module.get<TasksService>(TasksService);
-      const repo = module.get(getRepositoryToken(Task));
+      const repo = module.get<Repository<Task>>(getRepositoryToken(Task));
       await service.remove('1');
-      expect(repo.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
-      expect(repo.remove).toHaveBeenCalledWith(mockTask);
+      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
+      expect(jest.spyOn(repo, 'remove')).toHaveBeenCalledWith(mockTask);
     });
   });
 

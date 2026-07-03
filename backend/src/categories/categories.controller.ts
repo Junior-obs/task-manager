@@ -8,13 +8,14 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
+import { Category } from './category.entity';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
-  create(@Body() createCategoryDto: any) {
+  create(@Body() createCategoryDto: Partial<Category>) {
     return this.categoriesService.create(createCategoryDto);
   }
 
@@ -29,7 +30,10 @@ export class CategoriesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: any) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: Partial<Category>,
+  ) {
     return this.categoriesService.update(+id, updateCategoryDto);
   }
 

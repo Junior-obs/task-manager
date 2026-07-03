@@ -10,7 +10,7 @@ export class ProductsService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async create(createProductDto: any) {
+  async create(createProductDto: Partial<Product>) {
     const product = this.productRepository.create(createProductDto);
     return await this.productRepository.save(product);
   }
@@ -27,7 +27,7 @@ export class ProductsService {
     return product;
   }
 
-  async update(id: number, updateProductDto: any) {
+  async update(id: number, updateProductDto: Partial<Product>) {
     const product = await this.findOne(id);
     this.productRepository.merge(product, updateProductDto);
     return await this.productRepository.save(product);
