@@ -14,6 +14,7 @@ describe('TasksService', () => {
     email: 'test@test.com',
     username: 'test',
     password: 'hash',
+    refreshToken: '',
     role: UserRole.USER,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -95,7 +96,9 @@ describe('TasksService', () => {
   describe('findOne', () => {
     it('should return a task by id for owner', async () => {
       const result = await service.findOne('1', mockUser);
-      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
       expect(result).toEqual(mockTask);
     });
 
@@ -131,7 +134,9 @@ describe('TasksService', () => {
   describe('remove', () => {
     it('should delete a task', async () => {
       await service.remove('1', mockUser);
-      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
       expect(jest.spyOn(repo, 'remove')).toHaveBeenCalledWith(mockTask);
     });
   });
