@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus, TaskPriority, TaskCategory } from './task.entity';
 import { User, UserRole } from '../users/entities/user.entity';
 
 describe('TasksService', () => {
   let service: TasksService;
-  let repo: any;
+  let repo: Repository<Task>;
 
   const mockUser: User = {
     id: 'user1',
@@ -60,7 +61,7 @@ describe('TasksService', () => {
       ],
     }).compile();
     service = module.get<TasksService>(TasksService);
-    repo = module.get(getRepositoryToken(Task));
+    repo = module.get<Repository<Task>>(getRepositoryToken(Task));
   });
 
   it('should be defined', () => {
@@ -83,7 +84,7 @@ describe('TasksService', () => {
   describe('findAll', () => {
     it('should return paginated tasks for a user', async () => {
       const result = await service.findAll('user1');
-      expect(repo.findAndCount).toHaveBeenCalled();
+      expect(jest.spyOn(repo, 'findAndCount')).toHaveBeenCalled();
       expect(result.data).toEqual([mockTask]);
       expect(result.meta).toHaveProperty('total');
       expect(result.meta).toHaveProperty('page');
@@ -94,7 +95,7 @@ describe('TasksService', () => {
   describe('findOne', () => {
     it('should return a task by id for owner', async () => {
       const result = await service.findOne('1', mockUser);
-      expect(repo.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({ where: { id: '1' } });
       expect(result).toEqual(mockTask);
     });
 
@@ -121,8 +122,8 @@ describe('TasksService', () => {
     it('should update a task', async () => {
       const dto = { title: 'Updated' };
       const result = await service.update('1', dto, mockUser);
-      expect(repo.merge).toHaveBeenCalled();
-      expect(repo.save).toHaveBeenCalled();
+      expect(jest.spyOn(repo, 'merge')).toHaveBeenCalled();
+      expect(jest.spyOn(repo, 'save')).toHaveBeenCalled();
       expect(result).toEqual(mockTask);
     });
   });
@@ -130,8 +131,8 @@ describe('TasksService', () => {
   describe('remove', () => {
     it('should delete a task', async () => {
       await service.remove('1', mockUser);
-      expect(repo.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
-      expect(repo.remove).toHaveBeenCalledWith(mockTask);
+      expect(jest.spyOn(repo, 'findOne')).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(jest.spyOn(repo, 'remove')).toHaveBeenCalledWith(mockTask);
     });
   });
 
